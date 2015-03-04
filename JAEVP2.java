@@ -63,7 +63,7 @@ public class JAEVP2 {
 	
 	//Function that returns true if s is present, false otherwise.
 	boolean isPresent(String s){
-		
+		System.out.println("This is a test");
 		Node temp = root;
 		
 		for(int i = 0; i < s.length(); i++){
