@@ -35,7 +35,7 @@ public class JAEVP2 {
 	    
 	    
 	    Node temp = root;
-	    
+	    System.out.print("This is laswdlawdl");
 	    for(int i = 0; i < s.length(); i++){
 	    	
 	    	int pos = s.charAt(i) - 'a';
