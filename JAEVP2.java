@@ -1,22 +1,27 @@
 
 import java.util.Scanner;
 
+import com.sun.org.apache.bcel.internal.generic.ReturnaddressType;
+import com.sun.org.apache.xml.internal.utils.Trie;
+
 
 
 public class JAEVP2 {
 	
 	public static class Node{
 		
-		boolean terminal;
-		int outDegree;
-		Node[] children;
-		Node root;
+		boolean terminal;	//Variable to show Node makes a word.
+		int outDegree;		//Variable to keep track of number of children Node has.
+		Node[] children;	//Array variable to represent the 26 letters of the English alphabet.
+		Node root;			//Node element to represent the root node of the Trie.
+		int wordCount = 0;	//Variable to count words.
+		
 		
 		Node(){
-		terminal = false;
-		outDegree = 0;
-	    children = new Node[26];
-		}
+			terminal = false;			//Initialize to false, new Node is not a word unless end of word.
+			outDegree = 0;				//Initialize to 0, new Node has no children.
+		    children = new Node[26];	//Initialize array to size 26 for the English alphabet.
+		}//end of Node Constructor
 		
 		
 	//Function that creates an empty root node at start of program.
@@ -25,110 +30,112 @@ public class JAEVP2 {
 		Node newNode = new Node();
 		newNode.terminal = false;
 		root = newNode;
-	}
+	}//end of createEmptyNode
 	
 	
 	//Function that returns false if s is already present, true otherwise.
 	public boolean insert(String s){
 		
-		
-	    
-	    
 	    Node temp = root;
-	    System.out.print("This is laswdlawdl");
+	   
 	    for(int i = 0; i < s.length(); i++){
 	    	
-	    	int pos = s.charAt(i) - 'a';
+	    	int pos = s.charAt(i) - 'a';	//Variable to track letter of string.
 	    	
-	    	if(temp.children[pos] == null){
+	    	if(temp.children[pos] == null){	//If current's child is null create a new node to link current to new.
+	    		
 	    		temp.children[pos] = new Node();
-	    		temp.outDegree++;
-	    		
-	    		
-	    		if(i == s.length() - 1){
+	    		temp.outDegree++;	//Since current has a new child increment its outDegree.
+	    		if(i == s.length() - 1){	//If the next letter is last.
 		    		
-		    		temp.children[pos].terminal = true;
+		    		temp.children[pos].terminal = true;	//Set last char of word to terminal, since it is end of word.
+		    		return true;	//Word successfully inserted, return true.
 		    		
-		    		return true;
 		    	}
 	    	} 		
-	    	
-	    	
-	    	temp = temp.children[pos];
+	    	temp = temp.children[pos];	//Increment to subtree.
 	    }
-	    
 		return false;
-		
-	}
+	}//end of insert
 	
 	//Function that returns true if s is present, false otherwise.
 	boolean isPresent(String s){
-		System.out.println("This is a test");
+		
 		Node temp = root;
 		
 		for(int i = 0; i < s.length(); i++){
 			    	
-			    	int pos = s.charAt(i) - 'a';
+			    	int pos = s.charAt(i) - 'a';	//Variable to track letter of string.
 			    	
-			    	if(temp.children[pos] == null){
+			    	if(temp.children[pos] == null){	//If current's child is null return false, as it is not in the Trie.
 			    		return false;
 			    	}
 			    		
-			    		if(i == s.length() - 1){	
-			    			if(temp.children[pos].terminal == true){
-			    				return true;
-			    			}
+			    	if(i == s.length() - 1){	//If the next letter is last.
+			    		if(temp.children[pos].terminal == true){	//If current's child is terminal, word exists: return true.
+			    		return true;
 			    		}
+			    	}
 			    			    	
-			    	temp = temp.children[pos];
+			    	temp = temp.children[pos];	//Increment to subtree.
 		}
 		return false;
 				
-	}
+	}//end of isPresent.
 	
 	//Function that returns false is s is not present, true otherwise.
 	boolean delete(String s){
+		//NEEDS IMPLEMENTATION
+		/*boolean exists = root.isPresent(s);
+		
+		if(exists == false){
+			return false;
+		}else{
+		}*/
 		
 		return false;
 		
+	}//end of delete
+	
+	
+	public int membership(){	//Initial public call from main that sends root into private call.
+		wordCount = 0;
+		return membership(root);
 	}
 	
 	//Function that returns the number of words in the data structure.
-	int membership(){
+	private int membership(Node rootNode){
 		
-		Node temp = root;
-		int wordCount = 0;
-		
-		for(int i = 0; i < 26; i++){
+		for(int i = 0; i < 26; i++){	//Iterate through the current root's subtrees.
 			
-			if (temp.children[i] == null){
+			if (rootNode == null){	//If root itself is null, return 0;
+				return 0;
+			}else if(rootNode.children[i] != null){
 				
-				
-				
-			}
-				if (temp.children[i] != null){
-					temp.children[i].membership();
+				if(rootNode.children[i].terminal == true){	//If child of rootNode at current position is a terminal increment wordCount.
+					wordCount++;
 				}
-			
+				 membership(rootNode.children[i]);	//Recursive call to search current rootNode's subtrees.
+			}
 		}
-		return 0;
-	}
+		return wordCount;
+	}//end of membership.
 	
 	//Function that lists all members of the Trie in alphabetical order.
 	void listAll(){
 		
-		//Code for listAll
+		//NEEDS IMPLEMENTATION
 		
 	}
 	}
 	
 	 public static void main(String[] args) {
 	        
-	        Node Trie = new Node();
-	        Trie.createEmptyNode();
+	        Node Trie = new Node();	//Create new node to represent root.
+	        Trie.createEmptyNode();	//Initialize Trie to an empty root node.
 	   
 	        
-	        Scanner sc = new Scanner(System.in); // switch the comments before submitting
+	        Scanner sc = new Scanner(System.in); 
 	        //Scanner sc = new Scanner(new File("p115sd1.txt"));
 	        String line = "";
 	        boolean done = false;
