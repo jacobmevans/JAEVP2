@@ -121,10 +121,26 @@ public class JAEVP2 {
 		return wordCount;
 	}//end of membership.
 	
-	//Function that lists all members of the Trie in alphabetical order.
+	
 	void listAll(){
+		listAll("",root);
+	}
+	//Function that lists all members of the Trie in alphabetical order.
+	void listAll(String s, Node rootNode){
 		
-		//NEEDS IMPLEMENTATION
+		if (rootNode == null){	//If root itself is null, return 0.
+			
+		}else{	
+			if(rootNode.terminal == true){	//If root is a terminal print out the string with a newline.
+				System.out.println(s);
+			}
+			for(int i = 0;i < 26; i ++){	
+				if(rootNode.children[i] != null){	//If child of rootNode at current position is not null, recurse.
+					listAll(s + (char)(i+'a'), rootNode.children[i]); //Recursive call to keep going down the subtree.
+				}
+			}
+		}
+		
 		
 	}
 	}
@@ -217,6 +233,7 @@ public class JAEVP2 {
 		            case"L":{
 		            	
 		            	Trie.listAll();
+		            	break;
 		            	
 		            }
 		            
