@@ -73,7 +73,7 @@ public class JAEVP2 {
 				    		return true;
 				    		}
 				    	}		    	
-				    	temp = temp.children[pos];	//Increment to subtree.
+				    	temp = temp.children[pos];	//Increment to subtree
 			}
 			return false;
 					
@@ -249,7 +249,15 @@ public class JAEVP2 {
 		            //Case C, checks the input against the existing Trie for spelling mistakes, returning "Spelling mistake" if word is not found.
 		            case "C":{
 		            	
+		            	for(int i = 1; i < tokens.length; i++){
 		            	
+		            		boolean isPresent = Trie.isPresent(tokens[i]);
+		            		
+		            		if(!isPresent){
+		            			System.out.println("Spelling mistake " + tokens[i]);
+		            		}
+		            	}
+		            	break;
 		            }
 		            
 		            //Case L, calls listAll which prints all of the words in the Trie in alphabetical order, one per line.
