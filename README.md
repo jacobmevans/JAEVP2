@@ -7,3 +7,8 @@ This project was to write a class that implements a Trie data structure. A trie 
 
 For this implementation of a Trie, and to help simplify testing, all words were restricted to strings of lower-case characters, which excluded spaces and any form of punctuation. Words are also restricted to be of at most 20 characters long, to help in the simplicity of testing.
 
+TODO:
+
+Fix insert and add more detailed comments.
+
+Run tests from files.
