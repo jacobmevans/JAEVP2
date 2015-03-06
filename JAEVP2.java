@@ -1,7 +1,8 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 
 
 public class JAEVP2 {
@@ -49,7 +50,10 @@ public class JAEVP2 {
 			    		temp.children[pos].terminal = true;	//Set last char of word to terminal, since it is end of word.
 			    		return true;	//Word successfully inserted, return true.	
 			    	}
-		    	} 		
+		    	}else if(i == s.length() - 1 && temp.children[pos] != null && temp.children[pos].terminal != true){
+		    		temp.children[pos].terminal = true;
+		    		return true;
+		    	}		
 		    	temp = temp.children[pos];	//Increment to subtree.
 		    }
 			return false;
@@ -63,7 +67,7 @@ public class JAEVP2 {
 			for(int i = 0; i < s.length(); i++){
 				    	
 				    	int pos = s.charAt(i) - 'a';	//Variable to track letter of string.
-				    	
+				    
 				    	if(temp.children[pos] == null){	//If current's child is null return false, as it is not in the Trie.
 				    		return false;
 				    	}
@@ -72,43 +76,43 @@ public class JAEVP2 {
 				    		if(temp.children[pos].terminal == true){	//If current's child is terminal, word exists: return true.
 				    		return true;
 				    		}
-				    	}		    	
+				    	}	
+				    
 				    	temp = temp.children[pos];	//Increment to subtree
 			}
 			return false;
 					
 		}//end of isPresent.
 		
-		boolean delete(String s){
+		public boolean delete(String s){
+			boolean exists = isPresent(s);
+			
+			if(!exists){
+				return false;			
+			}else{
 			return delete(s, root);
+			}
 		}
 		//Function that returns false is s is not present, true otherwise.
-		boolean delete(String s, Node rootNode){
-			
-			
-			
+		private boolean delete(String s, Node rootNode){
 			
 			Node parent = rootNode;
 			Node temp = rootNode;
 			for(int i = 0; i < s.length(); i++){
 			
 				int pos = s.charAt(i) - 'a';
-				System.out.println(pos);
 				parent = temp;
 				temp = temp.children[pos];
 				
 				if(i == s.length() -1){
 										
 					if(temp.outDegree >= 1){	//If temporary has an outDegree of 1 or greater.
-						System.out.println("outDegree greate than 1");
 						temp.terminal = false;	//Set temporary's terminal value to false.
 						return true;
 					}else if(parent.outDegree > 1){	//Else if no children and parent has another child.
-						System.out.println("no children and parent has another child");
 						parent.children[pos] = null;
 						return true;
 					}else if (parent.outDegree == 1){	//Else if no children and parent has no other children.
-						System.out.println("no children and parent has no other children");
 						parent.children[pos] = null;
 						delete(s.substring(0, s.length() - 1));
 						return true;
@@ -146,15 +150,13 @@ public class JAEVP2 {
 		}//end of membership.
 		
 		
-		void listAll(){
+		public void listAll(){
 			listAll("",root);
 		}
 		//Function that lists all members of the Trie in alphabetical order.
-		void listAll(String s, Node rootNode){
+		private void listAll(String s, Node rootNode){
 			
-			if (rootNode == null){	//If root itself is null, return 0.
-				
-			}else{	
+			if (rootNode != null){	//If root itself is null, return 0.	
 				if(rootNode.terminal == true){	//If root is a terminal print out the string with a newline.
 					System.out.println(s);
 				}
@@ -168,14 +170,14 @@ public class JAEVP2 {
 		
 	}
 	
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws FileNotFoundException {
 	        
 	        Node Trie = new Node();	//Create new node to represent root.
 	        Trie.createEmptyNode();	//Initialize Trie to an empty root node.
 	   
 	        
-	        Scanner sc = new Scanner(System.in); 
-	        //Scanner sc = new Scanner(new File("p115sd1.txt"));
+	        //Scanner sc = new Scanner(System.in); 
+	        Scanner sc = new Scanner(new File("C:/Users/Jake/workspace/JAEVP2/p2in4.txt"));
 	        String line = "";
 	        boolean done = false;
 	        
@@ -198,9 +200,9 @@ public class JAEVP2 {
 		            	boolean insert = Trie.insert(tokens[1]);
 		            	
 		            	if(insert == true){
-		            		System.out.println("Word Inserted");
+		            		System.out.println("Word inserted");
 		            	}else{
-		            		System.out.println("Word Already Exists");
+		            		System.out.println("Word already exists");
 		            	}
 		            	
 		            	break;
@@ -212,7 +214,7 @@ public class JAEVP2 {
 		            
 		            	boolean delete = Trie.delete(tokens[1]);
 		                if(delete == true){
-		                	System.out.println("Word Deleted");
+		                	System.out.println("Word deleted");
 		                }else{
 		                	System.out.println("Word not present");
 		                }
